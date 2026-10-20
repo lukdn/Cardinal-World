@@ -21,10 +21,10 @@ public class GestorTelhas {
 		this.pj = pj;
 		
 		telha = new Telha[10];
-		mapatelha = new int [pj.colunatelamax][pj.horizontaltelamax];
+		mapatelha = new int [pj.maxmundocoluna][pj.maxmundohorizontal];
 		
 		getTileimage();
-		CarregarMapa("/mapas/mapa1.txt");
+		CarregarMapa("/mapas/MapaMundo.txt");
 
 		
 	}
@@ -33,7 +33,7 @@ public class GestorTelhas {
 		
 		try {
 			
-			telha[0] = new Telha();
+			telha[0] = new Telha(); 
 			telha[0].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/relva.png"));
 			
 			telha[1] = new Telha();
@@ -65,11 +65,11 @@ public class GestorTelhas {
 			int col = 0;
 			int ver = 0;
 			
-			while(col  < pj.colunatelamax && ver < pj.horizontaltelamax) {
+			while(col  < pj.maxmundocoluna && ver < pj.maxmundohorizontal) {
 				
 				String line = br.readLine();
 				
-				while(col < pj.colunatelamax) {
+				while(col < pj.maxmundocoluna) {
 					
 					String numeros[] = line.split(" ");
 					
@@ -79,7 +79,7 @@ public class GestorTelhas {
 					col++;
 					
 				}
-				if(col == pj.colunatelamax) {
+				if(col == pj.maxmundocoluna) {
 					col = 0;
 					ver++;
 				}
@@ -95,24 +95,32 @@ public class GestorTelhas {
 	
 	public void draw(Graphics2D g2) {
 		
-		int col = 0;
-		int ver = 0;
-		int x = 0;
-		int y = 0;
+		int mundocoluna = 0;
+		int mundohorizontal = 0;
 		
-		while (col < pj.colunatelamax && ver < pj.horizontaltelamax) {
+		while (mundocoluna < pj.maxmundocoluna && mundohorizontal < pj.maxmundohorizontal) {
 			
-			int telhanumero = mapatelha[col][ver];
+			int telhanumero = mapatelha[mundocoluna][mundohorizontal];
 			
-			g2.drawImage(telha[telhanumero].imagem, x, y, pj.telhatamanho, pj.telhatamanho, null);
-			col++;
-			x += pj.telhatamanho;
+			int mundoX = mundocoluna * pj.telhatamanho;
+			int mundoy = mundohorizontal * pj.telhatamanho;
+			int telax = mundoX - pj.jogador.mundox + pj.jogador.telax;
+			int telay = mundoy - pj.jogador.mundoy + pj.jogador.telay;
 			
-			if(col == pj.colunatelamax) {
-				col = 0;
-				x = 0;
-				ver++;
-				y += pj.telhatamanho;
+			
+			if(mundoX + pj.telhatamanho > pj.jogador.mundox - pj.jogador.telax &&
+			   mundoX - pj.telhatamanho < pj.jogador.mundox + pj.jogador.telax &&
+			   mundoy + pj.telhatamanho > pj.jogador.mundoy - pj.jogador.telay &&
+			   mundoy - pj.telhatamanho < pj.jogador.mundoy + pj.jogador.telay) {
+				
+				g2.drawImage(telha[telhanumero].imagem, telax, telay, pj.telhatamanho, pj.telhatamanho, null);
+				
+			}
+			mundocoluna++;
+			
+			if(mundocoluna == pj.maxmundocoluna) {
+				mundocoluna = 0;
+				mundohorizontal++;
 			}
 		}
 		

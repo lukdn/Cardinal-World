@@ -22,12 +22,18 @@ public class PainelJogo extends JPanel implements Runnable{
 	public final int telalargura = telhatamanho * colunatelamax; // 768 pixels
 	public final int telaaltura = telhatamanho * horizontaltelamax;//576 pixels
 	
+	//Configurações do mundo 
+	public final int maxmundocoluna = 50;
+	public final int maxmundohorizontal = 50;
+	public final int mundolargura = telhatamanho * maxmundocoluna;
+	public final int mundoaltura = telhatamanho * maxmundohorizontal;
+	
 	int FPS = 60;
 	
 	GestorTelhas GT = new GestorTelhas(this);
 	Teclas tecla = new Teclas();
 	Thread jogoThread;
-	Jogador jogador = new Jogador(this,tecla);
+	public Jogador jogador = new Jogador(this,tecla);
 	
 	
 	public PainelJogo () {
@@ -72,11 +78,7 @@ public class PainelJogo extends JPanel implements Runnable{
 			contador++;
 			}
 			
-			if(temporizador >= 1000000000) {
-				System.out.println("FPS:"+contador);
-				contador = 0;
-				temporizador = 0;
-			}
+
 			
 		}
 		
