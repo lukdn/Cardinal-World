@@ -1,6 +1,7 @@
 package entidade;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -24,6 +25,12 @@ public class Jogador extends Entidade{
 		
 		telax = pj.telalargura/2 -(pj.telhatamanho/2);
 		telay = pj.telaaltura/2 -(pj.telhatamanho/2);
+		
+		areasolida = new Rectangle();
+		areasolida.x = 12;
+		areasolida.y = 24; 
+		areasolida.width = 22;
+		areasolida.height = 22;
 		
 		setDefaultValues();
 		getPlayerImage(); 
@@ -68,19 +75,35 @@ public class Jogador extends Entidade{
 			
 			if(tecla.cimaapertado == true) {
 				direcao = "cima";
-				mundoy -= velocidade;
 			}
 			else if(tecla.baixoapertado == true) {
 				direcao = "baixo";
-				mundoy += velocidade;
 			}
 			else if(tecla.esquerdaapertado == true) {
 				direcao = "esquerda";
-				mundox -= velocidade;
 			}
 			else if(tecla.direitaapertado == true) {
 				direcao = "direita";
-				mundox += velocidade;
+			}
+			
+			Colisao = false;
+			pj.vecoli.verificartelha(this);
+			
+			if(Colisao == false) {
+				switch(direcao) {
+				case "cima":
+					mundoy -= velocidade;
+					break;
+				case "baixo":
+					mundoy += velocidade;
+					break;
+				case "esquerda":
+					mundox -= velocidade;
+					break;
+				case "direita":
+					mundox += velocidade; 
+					break;
+				}
 			}
 			
 			spritecontador++;

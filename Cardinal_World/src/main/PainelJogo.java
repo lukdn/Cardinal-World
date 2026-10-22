@@ -33,6 +33,7 @@ public class PainelJogo extends JPanel implements Runnable{
 	GestorTelhas GT = new GestorTelhas(this);
 	Teclas tecla = new Teclas();
 	Thread jogoThread;
+	public VerificacaodeColisao vecoli = new VerificacaodeColisao(this);
 	public Jogador jogador = new Jogador(this,tecla);
 	
 	

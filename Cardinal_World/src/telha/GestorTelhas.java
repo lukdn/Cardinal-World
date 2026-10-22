@@ -13,8 +13,8 @@ import main.PainelJogo;
 public class GestorTelhas {
 	
 	PainelJogo pj;
-	Telha[] telha;
-	int mapatelha[][];
+	public Telha[] telha;
+	public int mapatelha[][];
 	
 	public GestorTelhas(PainelJogo pj) {
 		
@@ -38,15 +38,18 @@ public class GestorTelhas {
 			
 			telha[1] = new Telha();
 			telha[1].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/tijolo.png"));
+			telha[1].colisao = true;
 			
 			telha[2] = new Telha();
 			telha[2].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/agua.png"));
+			telha[2].colisao = true;
 			
 			telha[3] = new Telha();
 			telha[3].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/terra2.png"));
 			
 			telha[4] = new Telha();
 			telha[4].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/Arvore.png"));
+			telha[4].colisao = true;
 			
 			telha[5] = new Telha();
 			telha[5].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/areia.png"));
