@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import Objeto.SuperObjeto;
 import entidade.Jogador;
 import telha.GestorTelhas;
 
@@ -34,7 +35,9 @@ public class PainelJogo extends JPanel implements Runnable{
 	Teclas tecla = new Teclas();
 	Thread jogoThread;
 	public VerificacaodeColisao vecoli = new VerificacaodeColisao(this);
+	public Colocador_de_objetos	aSetter = new Colocador_de_objetos(this);
 	public Jogador jogador = new Jogador(this,tecla);
+	public SuperObjeto obj[] = new SuperObjeto [10];
 	
 	
 	public PainelJogo () {
@@ -44,6 +47,12 @@ public class PainelJogo extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addKeyListener(tecla);
 		this.setFocusable(true);
+	}
+	
+	public void setupJogo() {
+		
+		aSetter.defineObjeto();
+		
 	}
 	
 	public void comecarJogoThread() {
@@ -96,11 +105,34 @@ public class PainelJogo extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		
 		super.paintComponent(g);
-		
 		Graphics2D g2  = (Graphics2D)g;
 		
+		//debug
+		long desenharcomeço = 0;
+		if(tecla.verificardesenhartempo == true) {
+			desenharcomeço = System.nanoTime();	
+		}	
+		//telha
 		GT.draw(g2);
+		
+		//objeto
+		for(int i = 0; i < obj.length; i++) {
+			if(obj[i] != null) {
+				obj[i].draw(g2, this);
+			}
+		}
+		
+		//jogador
 		jogador.draw(g2);
+		
+		//debug
+		if(tecla.verificardesenhartempo == true) {
+			long desenharfinal = System.nanoTime();	
+			long tempopassado = desenharfinal - desenharcomeço;	
+			g2.setColor(Color.white);
+			g2.drawString("tempo de desenho: "+tempopassado, 10, 400);
+			System.out.println("tempo de desenho: "+tempopassado);
+		}
 		
 		g2.dispose();
 		

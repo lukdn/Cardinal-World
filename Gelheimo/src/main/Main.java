@@ -9,7 +9,7 @@ public class Main {
 		JFrame window = new JFrame();
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setResizable(false);
-		window.setTitle("Cardinal World");
+		window.setTitle("Gelheimo");
 		
 		PainelJogo painelJogo = new PainelJogo();
 		window.add(painelJogo);
@@ -19,7 +19,9 @@ public class Main {
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
 		
+		painelJogo.setupJogo();
 		painelJogo.comecarJogoThread();
+		
 
 	}
 

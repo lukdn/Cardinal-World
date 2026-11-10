@@ -9,14 +9,15 @@ import javax.imageio.ImageIO;
 
 import main.PainelJogo;
 import main.Teclas;
+import main.utilidadesferramentas;
 
 public class Jogador extends Entidade{
 	
 	PainelJogo pj;
 	Teclas tecla;
-	
 	public final int telax;
 	public final int telay;
+	int temchave = 0;
 	
 	public Jogador(PainelJogo pj, Teclas tecla) {
 		
@@ -28,7 +29,9 @@ public class Jogador extends Entidade{
 		
 		areasolida = new Rectangle();
 		areasolida.x = 12;
-		areasolida.y = 24; 
+		areasolida.y = 24;
+		areasolidanormalX = areasolida.x;
+		areasolidanormalY = areasolida.y;
 		areasolida.width = 22;
 		areasolida.height = 22;
 		
@@ -48,23 +51,36 @@ public class Jogador extends Entidade{
 	
 	public void getPlayerImage() {
 		
+		cima1 = setup("humano_cima_1");
+		cima2 = setup("humano_cima_2");
+		cima3 = setup("humano_cima_3");
+		baixo1 = setup("humano_baixo_1");
+		baixo2 = setup("humano_baixo_2");
+		baixo3 = setup("humano_baixo_3");
+		esquerda1 = setup("humano_esquerda_1");
+		esquerda2 = setup("humano_esquerda_2");
+		esquerda3 = setup("humano_esquerda_3");
+		direita1 = setup("humano_direita_1");
+		direita2 = setup("humano_direita_2");
+		direita3 = setup("humano_direita_3");
+		
+	}
+	
+	public BufferedImage setup(String nomeImagem) {
+		
+		utilidadesferramentas uferra = new utilidadesferramentas();
+		BufferedImage imagem = null;
+		
 		try {
 			
-			cima1 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_cima_1.png"));
-			cima2 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_cima_2.png"));
-			
-			baixo1 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_Baixo_1.png"));
-			baixo2 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_Baixo_2.png"));
-			
-			esquerda1 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_esquerda_1.png"));
-			esquerda2 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_esquerda_2.png"));
-			
-			direita1 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_direita_1.png"));
-			direita2 = ImageIO.read(getClass().getResourceAsStream("/jogador/Para_direita_2.png"));
+			imagem = ImageIO.read(getClass().getResourceAsStream("/jogador/" + nomeImagem + ".png"));
+			imagem = uferra.Escalarimagem(imagem, pj.telhatamanho, pj.telhatamanho);
 			
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+		return imagem;
+		
 		
 	}
 	
@@ -86,8 +102,13 @@ public class Jogador extends Entidade{
 				direcao = "direita";
 			}
 			
+			// verificar telha colisao
 			Colisao = false;
 			pj.vecoli.verificartelha(this);
+			
+			// verificar colisao do objeto
+			int objIndex = pj.vecoli.verificarobjeto(this, true);
+			pegarObjeto(objIndex);
 			
 			if(Colisao == false) {
 				switch(direcao) {
@@ -107,8 +128,11 @@ public class Jogador extends Entidade{
 			}
 			
 			spritecontador++;
-			if(spritecontador > 10) {
+			if(spritecontador > 9) {  //mudar velocidade sprite
 				if(spritenumero == 1) {
+					spritenumero = 3;
+				}
+				else if(spritenumero == 3) {
 					spritenumero = 2;
 				}
 				else if (spritenumero == 2) {
@@ -119,9 +143,37 @@ public class Jogador extends Entidade{
 			
 		}
 		
+		else {
+			spritenumero = 1;
+		}
+		
 
 		
 	}
+	
+	public void pegarObjeto(int i) {
+		
+		if(i != 999) {
+			String nomeObjeto = pj.obj[i].nome;
+			
+			switch(nomeObjeto) {
+			case "chave":
+				temchave++;
+				pj.obj[i] = null;
+				System.out.println("Chave:"+temchave);
+				break;
+			case "porta":
+				if(temchave > 0) {
+					pj.obj[i] = null;
+					temchave--;
+				}
+				System.out.println("Chave:"+temchave);
+				break;
+			}
+		}
+		
+	}
+	
 	public void draw(Graphics2D g2) {
 		
 		//g2.setColor(Color.white);		
@@ -136,6 +188,9 @@ public class Jogador extends Entidade{
 			if(spritenumero == 2) {
 				imagem = cima2;
 			}
+			if(spritenumero == 3) {
+				imagem = cima3;
+			}
 			break;
 		case "baixo":
 			if(spritenumero == 1) {
@@ -143,6 +198,9 @@ public class Jogador extends Entidade{
 			}
 			if(spritenumero == 2) {
 				imagem = baixo2;
+			}
+			if(spritenumero == 3) {
+				imagem = baixo3;
 			}
 			break;
 		case "esquerda":
@@ -152,6 +210,9 @@ public class Jogador extends Entidade{
 			if(spritenumero == 2) {
 				imagem = esquerda2;
 			}
+			if(spritenumero == 3) {
+				imagem = esquerda3;
+			}
 			break;
 		case "direita":
 			if(spritenumero == 1) {
@@ -160,9 +221,12 @@ public class Jogador extends Entidade{
 			if(spritenumero == 2) {
 				imagem = direita2;
 			}
+			if(spritenumero == 3) {
+				imagem = direita3;
+			}
 			break;
 		}
-		g2.drawImage(imagem, telax, telay, pj.telhatamanho, pj.telhatamanho, null);
+		g2.drawImage(imagem, telax, telay, null);
 		
 	}
 

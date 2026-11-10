@@ -1,6 +1,7 @@
 package telha;
 
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +10,7 @@ import java.io.InputStreamReader;
 import javax.imageio.ImageIO;
 
 import main.PainelJogo;
+import main.utilidadesferramentas;
 
 public class GestorTelhas {
 	
@@ -30,34 +32,32 @@ public class GestorTelhas {
 	}
 	
 	public void getTileimage() {
+			
+			setup(0, "relva", false);
+			setup(1, "tijolo", true);
+			setup(2, "agua", true);
+			setup(3, "terra2", false);
+			setup(4, "Arvore", true);
+			setup(5, "areia", false);
+	}
+	
+	
+	public void setup(int index, String caminhodaImagem, boolean colisao) {
 		
-		try {
-			
-			telha[0] = new Telha(); 
-			telha[0].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/relva.png"));
-			
-			telha[1] = new Telha();
-			telha[1].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/tijolo.png"));
-			telha[1].colisao = true;
-			
-			telha[2] = new Telha();
-			telha[2].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/agua.png"));
-			telha[2].colisao = true;
-			
-			telha[3] = new Telha();
-			telha[3].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/terra2.png"));
-			
-			telha[4] = new Telha();
-			telha[4].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/Arvore.png"));
-			telha[4].colisao = true;
-			
-			telha[5] = new Telha();
-			telha[5].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/areia.png"));
+		utilidadesferramentas uferra = new utilidadesferramentas();
+		
+		try{
+			telha[index] = new Telha();
+			telha[index].imagem = ImageIO.read(getClass().getResourceAsStream("/telhas/" + caminhodaImagem +".png"));
+			telha[index].imagem = uferra.Escalarimagem(telha[index].imagem, pj.telhatamanho, pj.telhatamanho);
+			telha[index].colisao = colisao;
 			
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
+
 	
 	public void CarregarMapa(String ficheiro){
 		
@@ -116,7 +116,7 @@ public class GestorTelhas {
 			   mundoy + pj.telhatamanho > pj.jogador.mundoy - pj.jogador.telay &&
 			   mundoy - pj.telhatamanho < pj.jogador.mundoy + pj.jogador.telay) {
 				
-				g2.drawImage(telha[telhanumero].imagem, telax, telay, pj.telhatamanho, pj.telhatamanho, null);
+				g2.drawImage(telha[telhanumero].imagem, telax, telay, null);
 				
 			}
 			mundocoluna++;

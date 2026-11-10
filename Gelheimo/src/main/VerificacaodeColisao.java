@@ -62,5 +62,78 @@ public class VerificacaodeColisao {
 		
 		
 	}
+	public int verificarobjeto(Entidade entidade, boolean jogador) {
+		
+		int index = 999;
+		
+		for(int i = 0;i < pj.obj.length; i++) {
+			
+			if(pj.obj[i] !=null) {
+				
+				// ter a posição da entidade solida
+				entidade.areasolida.x = entidade.mundox + entidade.areasolida.x;
+				entidade.areasolida.y = entidade.mundoy + entidade.areasolida.y;
+				//ter a posição do objeto solido
+				pj.obj[i].areasolida.x = pj.obj[i].mundoX + pj.obj[i].areasolida.x;
+				pj.obj[i].areasolida.y = pj.obj[i].mundoY + pj.obj[i].areasolida.y;
+				
+				switch(entidade.direcao) {
+				case "cima":
+					entidade.areasolida.y -= entidade.velocidade;
+					if(entidade.areasolida.intersects(pj.obj[i].areasolida)) {
+						if(pj.obj[i].colisao == true) {
+							entidade.Colisao = true;
+						}
+						if(jogador == true) {
+							index = i;
+						}
+					}
+					break;
+				case "baixo":
+					entidade.areasolida.y += entidade.velocidade;
+					if(entidade.areasolida.intersects(pj.obj[i].areasolida)) {
+						if(pj.obj[i].colisao == true) {
+							entidade.Colisao = true;
+						}
+						if(jogador == true) {
+							index = i;
+						}
+					}
+					break;
+				case "esquerda":
+					entidade.areasolida.x -= entidade.velocidade;
+					if(entidade.areasolida.intersects(pj.obj[i].areasolida)) {
+						if(pj.obj[i].colisao == true) {
+							entidade.Colisao = true;
+						}
+						if(jogador == true) {
+							index = i;
+						}
+					}
+					break;
+				case "direita":
+					entidade.areasolida.x += entidade.velocidade;
+					if(entidade.areasolida.intersects(pj.obj[i].areasolida)) {
+						if(pj.obj[i].colisao == true) {
+							entidade.Colisao = true;
+						}
+						if(jogador == true) {
+							index = i;
+						}
+					}
+					break;
+				}
+			
+			entidade.areasolida.x = entidade.areasolidanormalX;
+			entidade.areasolida.y = entidade.areasolidanormalY;
+			pj.obj[i].areasolida.x = pj.obj[i].areasolidanormalX;
+			pj.obj[i].areasolida.y = pj.obj[i].areasolidanormalY;
+			}
+			
+		}
+		
+		return index;
+		
+	}
 
 }

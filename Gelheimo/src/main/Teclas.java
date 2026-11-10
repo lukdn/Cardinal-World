@@ -7,6 +7,8 @@ import java.awt.event.KeyListener;
 public class Teclas implements KeyListener{
 	
 	public boolean cimaapertado, baixoapertado, esquerdaapertado, direitaapertado;
+	
+	boolean verificardesenhartempo = false;
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -29,6 +31,17 @@ public class Teclas implements KeyListener{
 		}
 		if(code == KeyEvent.VK_D) {
 			direitaapertado = true;
+		}
+		
+		//debug
+		
+		if(code == KeyEvent.VK_T) {
+			if(verificardesenhartempo == false) {
+				verificardesenhartempo = true;
+			}
+			else if(verificardesenhartempo == true) {
+				verificardesenhartempo = false;
+			}
 		}
 		
 	}
